@@ -4,6 +4,10 @@
 
 - Keep responses concise and to the point - unless the user asks otherwise
 
+## PROJECT STRUCTURE
+
+- Always follow `STRUCTURE.md` for file placement, folder boundaries, and repository structure decisions.
+
 ## PLANNING MODE
 
 - Always ask clarifying questions

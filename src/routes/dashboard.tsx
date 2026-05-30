@@ -2,8 +2,8 @@ import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { Button } from "#/components/ui/button.tsx";
-import { authClient } from "#/lib/auth-client.ts";
-import { getSession } from "#/lib/auth-functions.ts";
+import { getSession } from "#/features/auth/auth.functions.ts";
+import { authClient } from "#/features/auth/auth-client.ts";
 
 export const Route = createFileRoute("/dashboard")({
 	beforeLoad: async () => {

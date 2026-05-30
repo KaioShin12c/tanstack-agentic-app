@@ -2,8 +2,8 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
 
-import { db } from "../db/index.ts";
-import * as schema from "../db/schema.ts";
+import { db } from "#/server/db/index.ts";
+import * as schema from "#/server/db/schema.ts";
 
 const githubClientId = process.env.GITHUB_CLIENT_ID;
 const githubClientSecret = process.env.GITHUB_CLIENT_SECRET;

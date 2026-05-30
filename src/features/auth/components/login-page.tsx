@@ -20,7 +20,7 @@ import {
 	FieldSeparator,
 } from "#/components/ui/field.tsx";
 import { Input } from "#/components/ui/input.tsx";
-import { authClient } from "#/lib/auth-client.ts";
+import { authClient } from "../auth-client.ts";
 
 export function LoginPage() {
 	const [githubError, setGithubError] = useState<string | null>(null);

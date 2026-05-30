@@ -40,5 +40,3 @@
 - ALWAYS use existing shadcn/ui components first before creating new custom components.
 - Only create a new component if no suitable shadcn/ui component exists.
 - Prefer composition and extension of shadcn/ui components over custom implementations.
-- Always follow the UI design system when creating or reviewing components or pages.
-- Design System: @DESIGN.md

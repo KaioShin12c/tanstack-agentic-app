@@ -7,10 +7,15 @@ import * as schema from "#/server/db/schema.ts";
 
 const githubClientId = process.env.GITHUB_CLIENT_ID;
 const githubClientSecret = process.env.GITHUB_CLIENT_SECRET;
-
-if (!githubClientId || !githubClientSecret) {
-	throw new Error("GitHub OAuth credentials are required");
-}
+const githubProvider =
+	githubClientId && githubClientSecret
+		? {
+				github: {
+					clientId: githubClientId,
+					clientSecret: githubClientSecret,
+				},
+			}
+		: undefined;
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
@@ -19,12 +24,8 @@ export const auth = betterAuth({
 	}),
 	emailAndPassword: {
 		enabled: true,
+		autoSignIn: false,
 	},
-	socialProviders: {
-		github: {
-			clientId: githubClientId,
-			clientSecret: githubClientSecret,
-		},
-	},
+	socialProviders: githubProvider,
 	plugins: [tanstackStartCookies()],
 });

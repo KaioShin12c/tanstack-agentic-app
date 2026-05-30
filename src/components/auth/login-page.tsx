@@ -1,4 +1,7 @@
+"use client";
+
 import { GithubIcon, LockKeyholeIcon, UserRoundIcon } from "lucide-react";
+import { useState } from "react";
 
 import { Button } from "#/components/ui/button.tsx";
 import {
@@ -17,8 +20,33 @@ import {
 	FieldSeparator,
 } from "#/components/ui/field.tsx";
 import { Input } from "#/components/ui/input.tsx";
+import { authClient } from "#/lib/auth-client.ts";
 
 export function LoginPage() {
+	const [githubError, setGithubError] = useState<string | null>(null);
+	const [isGithubLoading, setIsGithubLoading] = useState(false);
+
+	const handleGithubSignIn = async () => {
+		setGithubError(null);
+		setIsGithubLoading(true);
+
+		try {
+			const { error } = await authClient.signIn.social({
+				provider: "github",
+				callbackURL: "/dashboard",
+				errorCallbackURL: "/login",
+			});
+
+			if (error) {
+				setGithubError(error.message || "Không thể đăng nhập bằng GitHub.");
+				setIsGithubLoading(false);
+			}
+		} catch {
+			setGithubError("Không thể đăng nhập bằng GitHub.");
+			setIsGithubLoading(false);
+		}
+	};
+
 	return (
 		<main className="relative flex min-h-dvh overflow-hidden bg-background px-4 py-8 text-foreground sm:px-6 lg:px-8">
 			<div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_16%,color-mix(in_oklab,var(--primary)_18%,transparent),transparent_28%),radial-gradient(circle_at_82%_20%,color-mix(in_oklab,var(--ring)_36%,transparent),transparent_24%),linear-gradient(135deg,color-mix(in_oklab,var(--muted)_80%,transparent),transparent_42%)]" />
@@ -51,8 +79,8 @@ export function LoginPage() {
 							Một cổng vào gọn gàng cho đội vận hành.
 						</h1>
 						<p className="mt-6 max-w-lg text-lg leading-8 text-muted-foreground">
-							Giao diện đăng nhập tối giản, rõ thứ bậc, sẵn sàng nối logic xác
-							thực username/password và GitHub ở bước tiếp theo.
+							Giao diện đăng nhập tối giản, rõ thứ bậc, đã sẵn sàng xác thực qua
+							GitHub.
 						</p>
 					</div>
 
@@ -123,13 +151,27 @@ export function LoginPage() {
 
 								<Button
 									className="w-full"
+									disabled={isGithubLoading}
+									onClick={() => {
+										void handleGithubSignIn();
+									}}
 									size="lg"
 									type="button"
 									variant="outline"
 								>
 									<GithubIcon data-icon="inline-start" aria-hidden="true" />
-									Tiếp tục với GitHub
+									{isGithubLoading
+										? "Đang chuyển hướng..."
+										: "Tiếp tục với GitHub"}
 								</Button>
+								{githubError ? (
+									<p
+										className="text-sm font-medium text-destructive"
+										role="alert"
+									>
+										{githubError}
+									</p>
+								) : null}
 							</FieldGroup>
 						</form>
 					</CardContent>
